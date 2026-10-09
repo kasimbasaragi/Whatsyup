@@ -170,16 +170,53 @@ function renderChatList() {
 }
 
 /* --------------------------------------------------------------- new chat */
-$("btnNew").onclick = () => { $("newPhone").value = ""; $("newErr").textContent = ""; $("newDlg").showModal(); };
+$("btnNew").onclick = () => {
+  $("newPhone").value = ""; $("newErr").textContent = ""; $("inviteBox").hidden = true;
+  $("newDlg").showModal();
+};
 $("newCancel").onclick = () => $("newDlg").close();
+$("newPhone").addEventListener("input", () => { $("inviteBox").hidden = true; });
+
+/* ---- pick a number from the phone's contacts (Chrome on Android only; hidden elsewhere) ---- */
+const canPickContacts = "contacts" in navigator && "ContactsManager" in window;
+$("btnPick").hidden = !canPickContacts;
+$("btnPick").onclick = async () => {
+  try {
+    const picked = await navigator.contacts.select(["name", "tel"], { multiple: false });
+    if (!picked.length) return;
+    if (!picked[0].tel?.length) { $("newErr").textContent = "That contact has no phone number."; return; }
+    $("newPhone").value = picked[0].tel[0];
+    $("newErr").textContent = "";
+    $("newForm").requestSubmit();
+  } catch (_) { /* cancelled */ }
+};
+
+/* ---- invite someone who isn't on Whatsyup yet (uses the phone's own SMS app, free) ---- */
+const appLink = () => location.origin + location.pathname;
+const inviteText = () =>
+  `Hey! ${me.name} is inviting you to Whatsyup, a simple chat app. Sign up with this number and message me: ${appLink()}`;
+
+function showInvite(phone) {
+  const sep = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? "&" : "?";
+  $("inviteSms").href = `sms:+${phone}${sep}body=${encodeURIComponent(inviteText())}`;
+  $("inviteShare").hidden = !navigator.share;
+  $("inviteBox").hidden = false;
+}
+$("inviteShare").onclick = () => navigator.share({ title: "Whatsyup", text: inviteText(), url: appLink() }).catch(() => {});
+$("inviteCopy").onclick = async () => {
+  try { await navigator.clipboard.writeText(inviteText()); $("inviteCopy").textContent = "Copied ✓"; }
+  catch { prompt("Copy this invite:", inviteText()); }
+  setTimeout(() => ($("inviteCopy").textContent = "Copy link"), 2000);
+};
+
 $("newForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const err = $("newErr"); err.textContent = "";
+  const err = $("newErr"); err.textContent = ""; $("inviteBox").hidden = true;
   const phone = normPhone($("newPhone").value);
   if (phone === me.phone) { err.textContent = "That's your own number."; return; }
   try {
     const p = await getDoc(doc(db, "phones", phone));
-    if (!p.exists()) { err.textContent = "No Whatsyup user with that number."; return; }
+    if (!p.exists()) { err.textContent = "No Whatsyup user with that number."; showInvite(phone); return; }
     const peerUid = p.data().uid;
     const u = await getDoc(doc(db, "users", peerUid));
     const peer = u.data();
