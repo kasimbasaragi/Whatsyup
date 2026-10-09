@@ -90,8 +90,19 @@
     <form id="newForm" method="dialog" class="dlg">
       <h3>New chat</h3>
       <p class="small muted">Enter your friend's mobile number. They must have signed up on Whatsyup.</p>
-      <input id="newPhone" type="tel" placeholder="Mobile number" required />
+      <div class="phone-row">
+        <input id="newPhone" type="tel" placeholder="Mobile number" required />
+        <button type="button" id="btnPick" class="pick" title="Pick from my contacts" hidden>👤 Contacts</button>
+      </div>
       <p id="newErr" class="error"></p>
+      <div id="inviteBox" class="invite" hidden>
+        <p class="small muted">Not on Whatsyup yet. Invite them:</p>
+        <a id="inviteSms" class="btn primary" href="#">✉ Send invite via SMS</a>
+        <div class="row left">
+          <button type="button" id="inviteShare">Share…</button>
+          <button type="button" id="inviteCopy">Copy link</button>
+        </div>
+      </div>
       <div class="row">
         <button type="button" id="newCancel">Cancel</button>
         <button type="submit" class="primary">Start chat</button>
