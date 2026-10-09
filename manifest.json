@@ -1,0 +1,11 @@
+{
+  "name": "Whatsyup",
+  "short_name": "Whatsyup",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7C4DFF",
+  "icons": [
+    { "src": "logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

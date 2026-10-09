@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Whatsyup</title>
+  <meta name="theme-color" content="#7C4DFF" />
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ LOGIN / SIGN UP ============ -->
+  <section id="auth" class="auth-screen">
+    <div class="auth-card">
+      <img src="logo.svg" alt="Whatsyup logo" class="auth-logo" />
+      <h1>Whatsyup</h1>
+      <p class="muted">Simple, fast messaging.</p>
+
+      <div class="tabs">
+        <button id="tabLogin" class="tab active" type="button">Log in</button>
+        <button id="tabSignup" class="tab" type="button">Sign up</button>
+      </div>
+
+      <form id="authForm" autocomplete="on">
+        <input id="fName" type="text" placeholder="Your name" autocomplete="name" hidden />
+        <input id="fEmail" type="email" placeholder="Email" autocomplete="email" required />
+        <input id="fPhone" type="tel" placeholder="Mobile number (e.g. 9876543210)" autocomplete="tel" hidden />
+        <input id="fPass" type="password" placeholder="Password (min 6 characters)" autocomplete="current-password" minlength="6" required />
+        <button id="authBtn" class="primary" type="submit">Log in</button>
+        <p id="authErr" class="error"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ MAIN APP ============ -->
+  <section id="app" class="app" hidden>
+
+    <aside id="side" class="side">
+      <header class="bar">
+        <div class="me">
+          <div id="meAvatar" class="avatar"></div>
+          <div>
+            <strong id="meName"></strong>
+            <div id="mePhone" class="small muted"></div>
+          </div>
+        </div>
+        <div class="bar-actions">
+          <button id="btnNew" class="icon-btn" title="New chat">＋</button>
+          <button id="btnLogout" class="icon-btn" title="Log out">⎋</button>
+        </div>
+      </header>
+      <div class="searchbox"><input id="filter" type="search" placeholder="Search or start a new chat" /></div>
+      <ul id="chatList" class="chat-list"></ul>
+      <p id="noChats" class="muted center pad">No chats yet.<br />Tap ＋ and enter a friend's mobile number.</p>
+    </aside>
+
+    <main id="main" class="main">
+      <div id="empty" class="empty">
+        <img src="logo.svg" alt="" width="96" height="96" />
+        <h2>Whatsyup</h2>
+        <p class="muted">Pick a chat or start a new one with a mobile number.</p>
+      </div>
+
+      <div id="chat" class="chat" hidden>
+        <header class="bar">
+          <div class="me">
+            <button id="btnBack" class="icon-btn back" title="Back">←</button>
+            <div id="peerAvatar" class="avatar"></div>
+            <div>
+              <strong id="peerName"></strong>
+              <div id="peerPhone" class="small muted"></div>
+            </div>
+          </div>
+        </header>
+
+        <div id="messages" class="messages"></div>
+
+        <form id="sendForm" class="composer">
+          <input id="msgInput" type="text" placeholder="Type a message" autocomplete="off" />
+          <button class="send" type="submit" title="Send">➤</button>
+        </form>
+      </div>
+    </main>
+  </section>
+
+  <!-- ============ NEW CHAT DIALOG ============ -->
+  <dialog id="newDlg">
+    <form id="newForm" method="dialog" class="dlg">
+      <h3>New chat</h3>
+      <p class="small muted">Enter your friend's mobile number. They must have signed up on Whatsyup.</p>
+      <input id="newPhone" type="tel" placeholder="Mobile number" required />
+      <p id="newErr" class="error"></p>
+      <div class="row">
+        <button type="button" id="newCancel">Cancel</button>
+        <button type="submit" class="primary">Start chat</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
