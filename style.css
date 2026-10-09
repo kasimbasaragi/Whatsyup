@@ -103,6 +103,12 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 .dlg { padding: 22px; display: grid; gap: 10px; }
 .dlg h3 { margin: 0; }
 .row { display: flex; gap: 10px; justify-content: flex-end; }
+.phone-row { display: flex; gap: 8px; }
+.pick { flex: none; white-space: nowrap; }
+.row.left { justify-content: flex-start; margin-top: 8px; }
+.invite { background: var(--panel); border-radius: 12px; padding: 12px; }
+.invite p { margin: 0 0 8px; }
+.btn { display: block; text-align: center; text-decoration: none; border-radius: 10px; padding: 10px 16px; }
 
 /* ---------- mobile ---------- */
 @media (max-width: 760px) {
